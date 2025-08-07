@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "copper-rails",
+	"version": "${version}",
+	"name": "Copper Rails",
+	"description": "Adds copper rails to minecraft",
+	"authors": [
+		"hellonearth311"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/copper-rails/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.hellonearth311.copperrails.CopperRails"
+		],
+		"client": [
+			"net.hellonearth311.copperrails.CopperRailsClient"
+		],
+		"fabric-datagen": [
+			"net.hellonearth311.copperrails.CopperRailsDataGenerator"
+		]
+	},
+	"mixins": [
+		"copper-rails.mixins.json",
+		{
+			"config": "copper-rails.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
