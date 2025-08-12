@@ -2,7 +2,7 @@ package net.hellonearth311.copperrails.registries;
 
 import net.hellonearth311.copperrails.CopperRails;
 import net.hellonearth311.copperrails.registries.custom.block.CopperRail;
-import net.hellonearth311.copperrails.registries.custom.block.OxidationLevel;
+import net.hellonearth311.copperrails.oxidize.OxidationLevel;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.hellonearth311.copperrails.registries.custom.block.PoweredCopperRail;

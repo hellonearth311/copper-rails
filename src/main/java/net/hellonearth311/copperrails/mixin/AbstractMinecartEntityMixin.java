@@ -1,6 +1,6 @@
 package net.hellonearth311.copperrails.mixin;
 
-import net.hellonearth311.copperrails.registries.custom.block.OxidizableRail;
+import net.hellonearth311.copperrails.oxidize.OxidizableRail;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;

@@ -1,6 +1,8 @@
 package net.hellonearth311.copperrails.registries.custom.block;
 
 import com.mojang.serialization.MapCodec;
+import net.hellonearth311.copperrails.oxidize.OxidationLevel;
+import net.hellonearth311.copperrails.oxidize.OxidizableRail;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;

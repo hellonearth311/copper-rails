@@ -1,4 +1,4 @@
-package net.hellonearth311.copperrails.registries.custom.block;
+package net.hellonearth311.copperrails.oxidize;
 
 import net.minecraft.util.StringIdentifiable;
 
