@@ -2,13 +2,13 @@
 	"required": true,
 	"package": "net.hellonearth311.copperrails.mixin",
 	"compatibilityLevel": "JAVA_21",
+	"refmap": "copper-rails.refmap.json",
 	"mixins": [
-		"ExampleMixin"
+		"AbstractMinecartEntityMixin"
+	],
+	"client": [
 	],
 	"injectors": {
 		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
 	}
 }
