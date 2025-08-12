@@ -1,48 +1,177 @@
 package net.hellonearth311.copperrails.registries.custom.block;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RailBlock;
-import net.minecraft.block.Waterloggable;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.RailShape;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class CopperRail extends RailBlock implements Waterloggable {
-    public static final BooleanProperty POWERED = Properties.POWERED;
-    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+public class CopperRail extends AbstractRailBlock {
+    public static final MapCodec<CopperRail> CODEC = createCodec(CopperRail::new);
+    public static final EnumProperty<RailShape> SHAPE = Properties.RAIL_SHAPE;
+
+    @Override
+    public MapCodec<CopperRail> getCodec() {
+        return CODEC;
+    }
 
     public CopperRail(AbstractBlock.Settings settings) {
-        super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState()
-                .with(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-                .with(POWERED, false)
-                .with(WATERLOGGED, false));
+        super(false, settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(WATERLOGGED, false));
+    }
+
+    @Override
+    protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {
+        if (neighbor.getDefaultState().emitsRedstonePower() && new RailPlacementHelper(world, pos, state).getNeighbors().size() == 3) {
+            this.updateBlockState(world, pos, state, false);
+        }
+    }
+
+    @Override
+    public Property<RailShape> getShapeProperty() {
+        return SHAPE;
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, BlockRotation rotation) {
+        RailShape railShape = state.get(SHAPE);
+
+        return state.with(SHAPE, switch (rotation) {
+            case CLOCKWISE_180 -> {
+                switch (railShape) {
+                    case NORTH_SOUTH:
+                        yield RailShape.NORTH_SOUTH;
+                    case EAST_WEST:
+                        yield RailShape.EAST_WEST;
+                    case ASCENDING_EAST:
+                        yield RailShape.ASCENDING_WEST;
+                    case ASCENDING_WEST:
+                        yield RailShape.ASCENDING_EAST;
+                    case ASCENDING_NORTH:
+                        yield RailShape.ASCENDING_SOUTH;
+                    case ASCENDING_SOUTH:
+                        yield RailShape.ASCENDING_NORTH;
+                    case SOUTH_EAST:
+                        yield RailShape.NORTH_WEST;
+                    case SOUTH_WEST:
+                        yield RailShape.NORTH_EAST;
+                    case NORTH_WEST:
+                        yield RailShape.SOUTH_EAST;
+                    case NORTH_EAST:
+                        yield RailShape.SOUTH_WEST;
+                    default:
+                        throw new MatchException(null, null);
+                }
+            }
+            case COUNTERCLOCKWISE_90 -> {
+                switch (railShape) {
+                    case NORTH_SOUTH:
+                        yield RailShape.EAST_WEST;
+                    case EAST_WEST:
+                        yield RailShape.NORTH_SOUTH;
+                    case ASCENDING_EAST:
+                        yield RailShape.ASCENDING_NORTH;
+                    case ASCENDING_WEST:
+                        yield RailShape.ASCENDING_SOUTH;
+                    case ASCENDING_NORTH:
+                        yield RailShape.ASCENDING_WEST;
+                    case ASCENDING_SOUTH:
+                        yield RailShape.ASCENDING_EAST;
+                    case SOUTH_EAST:
+                        yield RailShape.NORTH_EAST;
+                    case SOUTH_WEST:
+                        yield RailShape.SOUTH_EAST;
+                    case NORTH_WEST:
+                        yield RailShape.SOUTH_WEST;
+                    case NORTH_EAST:
+                        yield RailShape.NORTH_WEST;
+                    default:
+                        throw new MatchException(null, null);
+                }
+            }
+            case CLOCKWISE_90 -> {
+                switch (railShape) {
+                    case NORTH_SOUTH:
+                        yield RailShape.EAST_WEST;
+                    case EAST_WEST:
+                        yield RailShape.NORTH_SOUTH;
+                    case ASCENDING_EAST:
+                        yield RailShape.ASCENDING_SOUTH;
+                    case ASCENDING_WEST:
+                        yield RailShape.ASCENDING_NORTH;
+                    case ASCENDING_NORTH:
+                        yield RailShape.ASCENDING_EAST;
+                    case ASCENDING_SOUTH:
+                        yield RailShape.ASCENDING_WEST;
+                    case SOUTH_EAST:
+                        yield RailShape.SOUTH_WEST;
+                    case SOUTH_WEST:
+                        yield RailShape.NORTH_WEST;
+                    case NORTH_WEST:
+                        yield RailShape.NORTH_EAST;
+                    case NORTH_EAST:
+                        yield RailShape.SOUTH_EAST;
+                    default:
+                        throw new MatchException(null, null);
+                }
+            }
+            default -> railShape;
+        });
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, BlockMirror mirror) {
+        RailShape railShape = state.get(SHAPE);
+        switch (mirror) {
+            case LEFT_RIGHT:
+                switch (railShape) {
+                    case ASCENDING_NORTH:
+                        return state.with(SHAPE, RailShape.ASCENDING_SOUTH);
+                    case ASCENDING_SOUTH:
+                        return state.with(SHAPE, RailShape.ASCENDING_NORTH);
+                    case SOUTH_EAST:
+                        return state.with(SHAPE, RailShape.NORTH_EAST);
+                    case SOUTH_WEST:
+                        return state.with(SHAPE, RailShape.NORTH_WEST);
+                    case NORTH_WEST:
+                        return state.with(SHAPE, RailShape.SOUTH_WEST);
+                    case NORTH_EAST:
+                        return state.with(SHAPE, RailShape.SOUTH_EAST);
+                    default:
+                        return super.mirror(state, mirror);
+                }
+            case FRONT_BACK:
+                switch (railShape) {
+                    case ASCENDING_EAST:
+                        return state.with(SHAPE, RailShape.ASCENDING_WEST);
+                    case ASCENDING_WEST:
+                        return state.with(SHAPE, RailShape.ASCENDING_EAST);
+                    case ASCENDING_NORTH:
+                    case ASCENDING_SOUTH:
+                    default:
+                        break;
+                    case SOUTH_EAST:
+                        return state.with(SHAPE, RailShape.SOUTH_WEST);
+                    case SOUTH_WEST:
+                        return state.with(SHAPE, RailShape.SOUTH_EAST);
+                    case NORTH_WEST:
+                        return state.with(SHAPE, RailShape.NORTH_EAST);
+                    case NORTH_EAST:
+                        return state.with(SHAPE, RailShape.NORTH_WEST);
+                }
+        }
+
+        return super.mirror(state, mirror);
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(this.getShapeProperty(), POWERED, WATERLOGGED);
-    }
-
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-        boolean waterlogged = fluidState.getFluid() == Fluids.WATER;
-        BlockState placementState = super.getPlacementState(ctx);
-        if (placementState != null) {
-            return placementState.with(WATERLOGGED, waterlogged);
-        }
-        return this.getDefaultState().with(WATERLOGGED, waterlogged);
-    }
-
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+        builder.add(SHAPE, WATERLOGGED);
     }
 }

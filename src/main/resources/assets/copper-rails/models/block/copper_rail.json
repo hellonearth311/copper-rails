@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/rail_flat",
+  "parent": "copper-rails:block/copper_rail_flat",
   "textures": {
     "rail": "copper-rails:block/copper_rail"
   }
