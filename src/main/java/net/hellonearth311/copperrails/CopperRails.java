@@ -3,6 +3,7 @@ package net.hellonearth311.copperrails;
 import net.fabricmc.api.ModInitializer;
 
 import net.hellonearth311.copperrails.registries.ModBlocks;
+import net.hellonearth311.copperrails.registries.ModCreativeTabs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ public class CopperRails implements ModInitializer {
 		LOGGER.info("Initializing CopperRails...");
 
 		ModBlocks.initializeBlocks();
+		ModCreativeTabs.registerCreativeTabs();
 
 		LOGGER.info("Initialized CopperRails successfully!");
 	}

@@ -1,4 +1,5 @@
 {
-  "itemgroup.copper-rails.item_group": "Copper Rails",
-  "item.copper-rails.copper_rail": "Copper Rail"
+  "block.copper-rails.copper_rail": "Copper Rail",
+  "item.copper-rails.copper_rail": "Copper Rail",
+  "itemgroup.copper-rails.copper_rails": "Copper Rails"
 }
