@@ -4,6 +4,7 @@ import net.hellonearth311.copperrails.CopperRails;
 import net.hellonearth311.copperrails.registries.custom.block.CopperRail;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.hellonearth311.copperrails.registries.custom.block.PoweredCopperRail;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -40,6 +41,15 @@ public class ModBlocks {
 
     public static final Block COPPER_RAIL = register("copper_rail",
             settings -> new CopperRail(settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block POWERED_COPPER_RAIL = register("powered_copper_rail",
+            settings -> new PoweredCopperRail(settings),
             AbstractBlock.Settings.create()
                     .strength(0.7f)
                     .sounds(BlockSoundGroup.METAL)

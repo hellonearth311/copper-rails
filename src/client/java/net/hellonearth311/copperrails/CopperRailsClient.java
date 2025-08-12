@@ -9,5 +9,6 @@ public class CopperRailsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_RAIL, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.POWERED_COPPER_RAIL, RenderLayer.getCutout());
 	}
 }

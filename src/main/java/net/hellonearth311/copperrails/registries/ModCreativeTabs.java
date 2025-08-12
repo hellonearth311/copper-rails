@@ -20,6 +20,7 @@ public class ModCreativeTabs {
             .displayName(Text.translatable("itemgroup.copper-rails.copper_rails"))
             .entries((displayContext, entries) -> {
                 entries.add(ModBlocks.COPPER_RAIL);
+                entries.add(ModBlocks.POWERED_COPPER_RAIL);
             })
             .build();
 
