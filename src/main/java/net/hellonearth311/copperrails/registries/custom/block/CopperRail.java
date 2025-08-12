@@ -1,8 +1,10 @@
 package net.hellonearth311.copperrails.registries.custom.block;
 
 import com.mojang.serialization.MapCodec;
+import net.hellonearth311.copperrails.registries.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
@@ -10,20 +12,58 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class CopperRail extends AbstractRailBlock {
+public class CopperRail extends AbstractRailBlock implements OxidizableRail {
     public static final MapCodec<CopperRail> CODEC = createCodec(CopperRail::new);
     public static final EnumProperty<RailShape> SHAPE = Properties.RAIL_SHAPE;
+    private final OxidationLevel oxidationLevel;
 
     @Override
     public MapCodec<CopperRail> getCodec() {
         return CODEC;
     }
 
-    public CopperRail(AbstractBlock.Settings settings) {
+    public CopperRail(OxidationLevel oxidationLevel, AbstractBlock.Settings settings) {
         super(false, settings);
+        this.oxidationLevel = oxidationLevel;
         this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(WATERLOGGED, false));
+    }
+
+    public CopperRail(AbstractBlock.Settings settings) {
+        this(OxidationLevel.UNAFFECTED, settings);
+    }
+
+    @Override
+    public OxidationLevel getOxidationLevel() {
+        return this.oxidationLevel;
+    }
+
+    @Override
+    public BlockState getDegradedState(BlockState state) {
+        return switch (this.oxidationLevel) {
+            case UNAFFECTED -> ModBlocks.EXPOSED_COPPER_RAIL.getDefaultState()
+                    .with(SHAPE, state.get(SHAPE))
+                    .with(WATERLOGGED, state.get(WATERLOGGED));
+            case EXPOSED -> ModBlocks.WEATHERED_COPPER_RAIL.getDefaultState()
+                    .with(SHAPE, state.get(SHAPE))
+                    .with(WATERLOGGED, state.get(WATERLOGGED));
+            case WEATHERED -> ModBlocks.OXIDIZED_COPPER_RAIL.getDefaultState()
+                    .with(SHAPE, state.get(SHAPE))
+                    .with(WATERLOGGED, state.get(WATERLOGGED));
+            case OXIDIZED -> state;
+        };
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        this.tickDegradation(state, world, pos, random);
+    }
+
+    @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return !this.oxidationLevel.isFullyOxidized();
     }
 
     @Override
@@ -152,10 +192,6 @@ public class CopperRail extends AbstractRailBlock {
                         return state.with(SHAPE, RailShape.ASCENDING_WEST);
                     case ASCENDING_WEST:
                         return state.with(SHAPE, RailShape.ASCENDING_EAST);
-                    case ASCENDING_NORTH:
-                    case ASCENDING_SOUTH:
-                    default:
-                        break;
                     case SOUTH_EAST:
                         return state.with(SHAPE, RailShape.SOUTH_WEST);
                     case SOUTH_WEST:
@@ -164,9 +200,10 @@ public class CopperRail extends AbstractRailBlock {
                         return state.with(SHAPE, RailShape.NORTH_EAST);
                     case NORTH_EAST:
                         return state.with(SHAPE, RailShape.NORTH_WEST);
+                    default:
+                        break;
                 }
         }
-
         return super.mirror(state, mirror);
     }
 

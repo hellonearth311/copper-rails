@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/rail_raised_ne",
+  "textures": {
+    "rail": "copper-rails:block/exposed_copper_rail"
+  }
+}
+

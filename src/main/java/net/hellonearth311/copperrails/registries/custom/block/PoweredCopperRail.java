@@ -6,6 +6,7 @@ import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -14,21 +15,53 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class PoweredCopperRail extends AbstractRailBlock {
+public class PoweredCopperRail extends AbstractRailBlock implements OxidizableRail {
     public static final MapCodec<PoweredCopperRail> CODEC = createCodec(PoweredCopperRail::new);
     public static final EnumProperty<RailShape> SHAPE = Properties.STRAIGHT_RAIL_SHAPE;
     public static final BooleanProperty POWERED = Properties.POWERED;
+    private final OxidationLevel oxidationLevel;
 
     @Override
     public MapCodec<PoweredCopperRail> getCodec() {
         return CODEC;
     }
 
-    public PoweredCopperRail(AbstractBlock.Settings settings) {
+    public PoweredCopperRail(OxidationLevel oxidationLevel, AbstractBlock.Settings settings) {
         super(true, settings);
+        this.oxidationLevel = oxidationLevel;
         this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false).with(WATERLOGGED, false));
+    }
+
+    public PoweredCopperRail(AbstractBlock.Settings settings) {
+        this(OxidationLevel.UNAFFECTED, settings);
+    }
+
+    @Override
+    public OxidationLevel getOxidationLevel() {
+        return this.oxidationLevel;
+    }
+
+    @Override
+    public BlockState getDegradedState(BlockState state) {
+        BlockState degradedState = getNextOxidationState(this.oxidationLevel, state);
+        return degradedState != null ? degradedState : state;
+    }
+
+    private BlockState getNextOxidationState(OxidationLevel currentLevel, BlockState currentState) {
+        return currentState;
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        this.tickDegradation(state, world, pos, random);
+    }
+
+    @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return !this.oxidationLevel.isFullyOxidized();
     }
 
     protected boolean isPoweredByOtherRails(World world, BlockPos pos, BlockState state, boolean bl, int distance) {
@@ -214,16 +247,13 @@ public class PoweredCopperRail extends AbstractRailBlock {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, net.minecraft.entity.Entity entity) {
         if (!world.isClient && entity instanceof net.minecraft.entity.vehicle.AbstractMinecartEntity minecart) {
             if (state.get(POWERED)) {
-                // Accelerate the minecart when powered
                 net.minecraft.util.math.Vec3d velocity = minecart.getVelocity();
                 double speed = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
 
                 if (speed > 0.01) {
-                    // Apply acceleration in the direction of movement
-                    double multiplier = 1.06; // Slightly less aggressive than vanilla powered rails (1.06 vs 1.0625)
+                    double multiplier = 1.06;
                     minecart.setVelocity(velocity.x * multiplier, velocity.y, velocity.z * multiplier);
                 } else {
-                    // Give initial push if stationary
                     RailShape shape = state.get(SHAPE);
                     double pushForce = 0.02;
 

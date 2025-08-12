@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "copper-rails:block/oxidized_powered_copper_rail_on"
+  }
+}
+

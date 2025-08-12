@@ -1,6 +1,12 @@
 {
   "values": [
     "copper-rails:copper_rail",
-    "copper-rails:powered_copper_rail"
+    "copper-rails:exposed_copper_rail",
+    "copper-rails:weathered_copper_rail",
+    "copper-rails:oxidized_copper_rail",
+    "copper-rails:powered_copper_rail",
+    "copper-rails:exposed_powered_copper_rail",
+    "copper-rails:weathered_powered_copper_rail",
+    "copper-rails:oxidized_powered_copper_rail"
   ]
 }

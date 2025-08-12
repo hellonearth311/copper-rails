@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/rail_raised_sw",
+  "textures": {
+    "rail": "copper-rails:block/weathered_powered_copper_rail"
+  }
+}
+

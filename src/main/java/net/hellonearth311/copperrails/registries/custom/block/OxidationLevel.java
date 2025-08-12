@@ -1,0 +1,49 @@
+package net.hellonearth311.copperrails.registries.custom.block;
+
+import net.minecraft.util.StringIdentifiable;
+
+public enum OxidationLevel implements StringIdentifiable {
+    UNAFFECTED("unaffected", 1.0f),
+    EXPOSED("exposed", 0.9f),
+    WEATHERED("weathered", 0.8f),
+    OXIDIZED("oxidized", 0.7f);
+
+    private final String name;
+    private final float speedMultiplier;
+
+    OxidationLevel(String name, float speedMultiplier) {
+        this.name = name;
+        this.speedMultiplier = speedMultiplier;
+    }
+
+    @Override
+    public String asString() {
+        return this.name;
+    }
+
+    public float getSpeedMultiplier() {
+        return this.speedMultiplier;
+    }
+
+    public OxidationLevel getNext() {
+        return switch (this) {
+            case UNAFFECTED -> EXPOSED;
+            case EXPOSED -> WEATHERED;
+            case WEATHERED -> OXIDIZED;
+            case OXIDIZED -> OXIDIZED;
+        };
+    }
+
+    public OxidationLevel getPrevious() {
+        return switch (this) {
+            case UNAFFECTED -> UNAFFECTED;
+            case EXPOSED -> UNAFFECTED;
+            case WEATHERED -> EXPOSED;
+            case OXIDIZED -> WEATHERED;
+        };
+    }
+
+    public boolean isFullyOxidized() {
+        return this == OXIDIZED;
+    }
+}
