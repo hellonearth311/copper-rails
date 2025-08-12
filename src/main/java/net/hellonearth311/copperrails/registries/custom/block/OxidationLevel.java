@@ -3,10 +3,10 @@ package net.hellonearth311.copperrails.registries.custom.block;
 import net.minecraft.util.StringIdentifiable;
 
 public enum OxidationLevel implements StringIdentifiable {
-    UNAFFECTED("unaffected", 1.0f),
-    EXPOSED("exposed", 0.9f),
-    WEATHERED("weathered", 0.8f),
-    OXIDIZED("oxidized", 0.7f);
+    UNAFFECTED("unaffected", 0.75f),
+    EXPOSED("exposed", 0.6875f),
+    WEATHERED("weathered", 0.625f),
+    OXIDIZED("oxidized", 0.5625f);
 
     private final String name;
     private final float speedMultiplier;
