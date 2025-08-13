@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:stick",
+    "X": "minecraft:honeycomb"
+  },
+  "pattern": [
+    "   ",
+    "XXX",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "id": "copper-rails:waxer"
+  }
+}

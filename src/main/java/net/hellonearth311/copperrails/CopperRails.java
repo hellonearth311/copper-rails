@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 
 import net.hellonearth311.copperrails.registries.ModBlocks;
 import net.hellonearth311.copperrails.registries.ModCreativeTabs;
+import net.hellonearth311.copperrails.registries.ModItems;
 import net.minecraft.item.HoneycombItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,8 @@ public class CopperRails implements ModInitializer {
 
 		ModBlocks.initializeBlocks();
 		ModCreativeTabs.registerCreativeTabs();
+		ModItems.initializeModItems();
 
-		// Register waxed to unwaxed block mappings for axe interactions
 		registerWaxedBlocks();
 
 		LOGGER.info("Initialized CopperRails successfully!");

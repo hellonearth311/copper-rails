@@ -31,5 +31,6 @@
   "item.copper-rails.waxed_weathered_powered_copper_rail": "Waxed Weathered Powered Copper Rail",
   "block.copper-rails.waxed_oxidized_powered_copper_rail": "Waxed Oxidized Powered Copper Rail",
   "item.copper-rails.waxed_oxidized_powered_copper_rail": "Waxed Oxidized Powered Copper Rail",
-  "itemgroup.copper-rails.copper_rails": "Copper Rails"
+  "itemgroup.copper-rails.copper_rails": "Copper Rails",
+  "item.copper-rails.waxer": "Waxer"
 }

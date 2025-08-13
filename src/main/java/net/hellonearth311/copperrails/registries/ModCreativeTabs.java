@@ -38,6 +38,8 @@ public class ModCreativeTabs {
                 entries.add(ModBlocks.WAXED_EXPOSED_POWERED_COPPER_RAIL);
                 entries.add(ModBlocks.WAXED_WEATHERED_POWERED_COPPER_RAIL);
                 entries.add(ModBlocks.WAXED_OXIDIZED_POWERED_COPPER_RAIL);
+
+                entries.add(ModItems.WAXER);
             })
             .build();
 
