@@ -3,21 +3,28 @@ package net.hellonearth311.copperrails.registries.custom.block;
 import com.mojang.serialization.MapCodec;
 import net.hellonearth311.copperrails.oxidize.OxidationLevel;
 import net.hellonearth311.copperrails.oxidize.OxidizableRail;
+import net.hellonearth311.copperrails.oxidize.Waxable;
 import net.hellonearth311.copperrails.registries.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class CopperRail extends AbstractRailBlock implements OxidizableRail {
+import java.util.Optional;
+
+public class CopperRail extends AbstractRailBlock implements OxidizableRail, Waxable {
     public static final MapCodec<CopperRail> CODEC = createCodec(CopperRail::new);
     public static final EnumProperty<RailShape> SHAPE = Properties.RAIL_SHAPE;
     private final OxidationLevel oxidationLevel;
@@ -54,7 +61,7 @@ public class CopperRail extends AbstractRailBlock implements OxidizableRail {
             case WEATHERED -> ModBlocks.OXIDIZED_COPPER_RAIL.getDefaultState()
                     .with(SHAPE, state.get(SHAPE))
                     .with(WATERLOGGED, state.get(WATERLOGGED));
-            case OXIDIZED -> state;
+            case OXIDIZED, WAXED_UNAFFECTED, WAXED_EXPOSED, WAXED_WEATHERED, WAXED_OXIDIZED -> state;
         };
     }
 
@@ -64,8 +71,63 @@ public class CopperRail extends AbstractRailBlock implements OxidizableRail {
     }
 
     @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        return ActionResult.PASS;
+    }
+
+    @Deprecated
+    public ActionResult use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        System.out.println("CopperRail.use (deprecated) called with item: " + player.getStackInHand(hand).getItem());
+        return this.onUse(state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    public Optional<BlockState> getWaxedState(BlockState currentState) {
+        if (this.oxidationLevel.isWaxed()) {
+            return Optional.empty();
+        }
+
+        Block waxedBlock = switch (this.oxidationLevel) {
+            case UNAFFECTED -> ModBlocks.WAXED_COPPER_RAIL;
+            case EXPOSED -> ModBlocks.WAXED_EXPOSED_COPPER_RAIL;
+            case WEATHERED -> ModBlocks.WAXED_WEATHERED_COPPER_RAIL;
+            case OXIDIZED -> ModBlocks.WAXED_OXIDIZED_COPPER_RAIL;
+            default -> null;
+        };
+
+        if (waxedBlock != null) {
+            return Optional.of(waxedBlock.getDefaultState()
+                    .with(SHAPE, currentState.get(SHAPE))
+                    .with(WATERLOGGED, currentState.get(WATERLOGGED)));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<BlockState> getUnwaxedState(BlockState currentState) {
+        if (!this.oxidationLevel.isWaxed()) {
+            return Optional.empty();
+        }
+
+        Block unwaxedBlock = switch (this.oxidationLevel) {
+            case WAXED_UNAFFECTED -> ModBlocks.COPPER_RAIL;
+            case WAXED_EXPOSED -> ModBlocks.EXPOSED_COPPER_RAIL;
+            case WAXED_WEATHERED -> ModBlocks.WEATHERED_COPPER_RAIL;
+            case WAXED_OXIDIZED -> ModBlocks.OXIDIZED_COPPER_RAIL;
+            default -> null;
+        };
+
+        if (unwaxedBlock != null) {
+            return Optional.of(unwaxedBlock.getDefaultState()
+                    .with(SHAPE, currentState.get(SHAPE))
+                    .with(WATERLOGGED, currentState.get(WATERLOGGED)));
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public boolean hasRandomTicks(BlockState state) {
-        return !this.oxidationLevel.isFullyOxidized();
+        return !this.oxidationLevel.isFullyOxidized() && !this.oxidationLevel.isWaxed();
     }
 
     @Override

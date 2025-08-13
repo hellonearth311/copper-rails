@@ -1,0 +1,7 @@
+{
+  "parent": "block/rail_corner",
+  "textures": {
+    "rail": "copper-rails:block/exposed_copper_rail_corner"
+  }
+}
+

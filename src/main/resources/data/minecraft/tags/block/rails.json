@@ -7,6 +7,14 @@
     "copper-rails:powered_copper_rail",
     "copper-rails:exposed_powered_copper_rail",
     "copper-rails:weathered_powered_copper_rail",
-    "copper-rails:oxidized_powered_copper_rail"
+    "copper-rails:oxidized_powered_copper_rail",
+    "copper-rails:waxed_copper_rail",
+    "copper-rails:waxed_exposed_copper_rail",
+    "copper-rails:waxed_weathered_copper_rail",
+    "copper-rails:waxed_oxidized_copper_rail",
+    "copper-rails:waxed_powered_copper_rail",
+    "copper-rails:waxed_exposed_powered_copper_rail",
+    "copper-rails:waxed_weathered_powered_copper_rail",
+    "copper-rails:waxed_oxidized_powered_copper_rail"
   ]
 }

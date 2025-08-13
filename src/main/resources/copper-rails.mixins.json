@@ -4,7 +4,9 @@
 	"compatibilityLevel": "JAVA_21",
 	"refmap": "copper-rails.refmap.json",
 	"mixins": [
-		"AbstractMinecartEntityMixin"
+		"AbstractMinecartEntityMixin",
+		"HoneycombItemMixin",
+		"AxeItemMixin"
 	],
 	"client": [
 	],

@@ -24,10 +24,20 @@ public class ModCreativeTabs {
                 entries.add(ModBlocks.WEATHERED_COPPER_RAIL);
                 entries.add(ModBlocks.OXIDIZED_COPPER_RAIL);
 
+                entries.add(ModBlocks.WAXED_COPPER_RAIL);
+                entries.add(ModBlocks.WAXED_EXPOSED_COPPER_RAIL);
+                entries.add(ModBlocks.WAXED_WEATHERED_COPPER_RAIL);
+                entries.add(ModBlocks.WAXED_OXIDIZED_COPPER_RAIL);
+
                 entries.add(ModBlocks.POWERED_COPPER_RAIL);
                 entries.add(ModBlocks.EXPOSED_POWERED_COPPER_RAIL);
                 entries.add(ModBlocks.WEATHERED_POWERED_COPPER_RAIL);
                 entries.add(ModBlocks.OXIDIZED_POWERED_COPPER_RAIL);
+
+                entries.add(ModBlocks.WAXED_POWERED_COPPER_RAIL);
+                entries.add(ModBlocks.WAXED_EXPOSED_POWERED_COPPER_RAIL);
+                entries.add(ModBlocks.WAXED_WEATHERED_POWERED_COPPER_RAIL);
+                entries.add(ModBlocks.WAXED_OXIDIZED_POWERED_COPPER_RAIL);
             })
             .build();
 

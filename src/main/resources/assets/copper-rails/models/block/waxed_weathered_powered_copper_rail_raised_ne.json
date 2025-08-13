@@ -1,0 +1,7 @@
+{
+  "parent": "block/rail_raised_ne",
+  "textures": {
+    "rail": "copper-rails:block/weathered_powered_copper_rail"
+  }
+}
+

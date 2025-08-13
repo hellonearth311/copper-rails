@@ -1,0 +1,7 @@
+{
+  "parent": "block/rail_raised_sw",
+  "textures": {
+    "rail": "copper-rails:block/exposed_powered_copper_rail"
+  }
+}
+

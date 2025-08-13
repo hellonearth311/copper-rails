@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "copper-rails:block/waxed_exposed_powered_copper_rail"
+  }
+}

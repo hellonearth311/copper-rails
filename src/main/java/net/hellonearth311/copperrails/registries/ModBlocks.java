@@ -112,6 +112,80 @@ public class ModBlocks {
                     .noCollision(),
             true);
 
+    // Waxed Copper Rails
+    public static final Block WAXED_COPPER_RAIL = register("waxed_copper_rail",
+            settings -> new CopperRail(OxidationLevel.WAXED_UNAFFECTED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block WAXED_EXPOSED_COPPER_RAIL = register("waxed_exposed_copper_rail",
+            settings -> new CopperRail(OxidationLevel.WAXED_EXPOSED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block WAXED_WEATHERED_COPPER_RAIL = register("waxed_weathered_copper_rail",
+            settings -> new CopperRail(OxidationLevel.WAXED_WEATHERED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block WAXED_OXIDIZED_COPPER_RAIL = register("waxed_oxidized_copper_rail",
+            settings -> new CopperRail(OxidationLevel.WAXED_OXIDIZED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    // Waxed Powered Copper Rails
+    public static final Block WAXED_POWERED_COPPER_RAIL = register("waxed_powered_copper_rail",
+            settings -> new PoweredCopperRail(OxidationLevel.WAXED_UNAFFECTED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block WAXED_EXPOSED_POWERED_COPPER_RAIL = register("waxed_exposed_powered_copper_rail",
+            settings -> new PoweredCopperRail(OxidationLevel.WAXED_EXPOSED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block WAXED_WEATHERED_POWERED_COPPER_RAIL = register("waxed_weathered_powered_copper_rail",
+            settings -> new PoweredCopperRail(OxidationLevel.WAXED_WEATHERED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
+    public static final Block WAXED_OXIDIZED_POWERED_COPPER_RAIL = register("waxed_oxidized_powered_copper_rail",
+            settings -> new PoweredCopperRail(OxidationLevel.WAXED_OXIDIZED, settings),
+            AbstractBlock.Settings.create()
+                    .strength(0.7f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+                    .noCollision(),
+            true);
+
     public static void initializeBlocks() {
     }
 }

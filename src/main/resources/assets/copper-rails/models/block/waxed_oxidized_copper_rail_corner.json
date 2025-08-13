@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/rail_corner",
+  "parent": "block/rail_corner",
   "textures": {
     "rail": "copper-rails:block/oxidized_copper_rail_corner"
   }
