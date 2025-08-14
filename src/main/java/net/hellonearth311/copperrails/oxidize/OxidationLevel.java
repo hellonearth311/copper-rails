@@ -82,4 +82,13 @@ public enum OxidationLevel implements StringIdentifiable {
     public boolean isFullyOxidized() {
         return this == OXIDIZED || this == WAXED_OXIDIZED;
     }
+
+    public double getMaxSpeed() {
+        return switch (this) {
+            case UNAFFECTED, WAXED_UNAFFECTED -> 6.0 / 20.0; // 6 blocks per second
+            case EXPOSED, WAXED_EXPOSED -> 5.5 / 20.0; // 5.5 blocks per second
+            case WEATHERED, WAXED_WEATHERED -> 5.0 / 20.0; // 5 blocks per second
+            case OXIDIZED, WAXED_OXIDIZED -> 4.5 / 20.0; // 4.5 blocks per second
+        };
+    }
 }

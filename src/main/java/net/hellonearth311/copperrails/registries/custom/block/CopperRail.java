@@ -288,7 +288,6 @@ public class CopperRail extends AbstractRailBlock implements OxidizableRail, Wax
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         Item item = stack.getItem();
 
-        // Handle waxing with honeycomb
         if (item instanceof HoneycombItem) {
             Optional<BlockState> waxedState = this.getWaxedState(state);
             if (waxedState.isPresent()) {
@@ -306,7 +305,6 @@ public class CopperRail extends AbstractRailBlock implements OxidizableRail, Wax
             }
         }
 
-        // Handle unwaxing with axe
         if (item instanceof AxeItem) {
             Optional<BlockState> unwaxedState = this.getUnwaxedState(state);
             if (unwaxedState.isPresent()) {
@@ -321,5 +319,21 @@ public class CopperRail extends AbstractRailBlock implements OxidizableRail, Wax
         }
 
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, net.minecraft.entity.Entity entity) {
+        if (!world.isClient && entity instanceof net.minecraft.entity.vehicle.AbstractMinecartEntity minecart) {
+            double speedCap = this.oxidationLevel.getMaxSpeed();
+
+            net.minecraft.util.math.Vec3d velocity = minecart.getVelocity();
+            double currentSpeed = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
+
+            if (currentSpeed > speedCap) {
+                double ratio = speedCap / currentSpeed;
+                net.minecraft.util.math.Vec3d cappedVelocity = velocity.multiply(ratio, 1.0, ratio);
+                minecart.setVelocity(cappedVelocity);
+            }
+        }
     }
 }

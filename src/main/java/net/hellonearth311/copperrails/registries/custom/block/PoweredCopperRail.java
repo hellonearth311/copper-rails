@@ -351,7 +351,6 @@ public class PoweredCopperRail extends AbstractRailBlock implements OxidizableRa
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         Item item = stack.getItem();
 
-        // Handle waxing with honeycomb
         if (item instanceof HoneycombItem) {
             Optional<BlockState> waxedState = this.getWaxedState(state);
             if (waxedState.isPresent()) {
@@ -369,7 +368,6 @@ public class PoweredCopperRail extends AbstractRailBlock implements OxidizableRa
             }
         }
 
-        // Handle unwaxing with axe
         if (item instanceof AxeItem) {
             Optional<BlockState> unwaxedState = this.getUnwaxedState(state);
             if (unwaxedState.isPresent()) {
