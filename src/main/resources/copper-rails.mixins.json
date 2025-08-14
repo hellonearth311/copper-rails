@@ -5,8 +5,7 @@
 	"refmap": "copper-rails.refmap.json",
 	"mixins": [
 		"AbstractMinecartEntityMixin",
-		"HoneycombItemMixin",
-		"AxeItemMixin"
+		"HoneycombItemMixin"
 	],
 	"client": [
 	],

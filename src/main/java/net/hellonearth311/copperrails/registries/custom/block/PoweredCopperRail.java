@@ -5,13 +5,21 @@ import net.hellonearth311.copperrails.oxidize.OxidationLevel;
 import net.hellonearth311.copperrails.oxidize.OxidizableRail;
 import net.hellonearth311.copperrails.oxidize.Waxable;
 import net.hellonearth311.copperrails.registries.ModBlocks;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.HoneycombItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -337,5 +345,44 @@ public class PoweredCopperRail extends AbstractRailBlock implements OxidizableRa
                 }
             }
         }
+    }
+
+    @Override
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        Item item = stack.getItem();
+
+        // Handle waxing with honeycomb
+        if (item instanceof HoneycombItem) {
+            Optional<BlockState> waxedState = this.getWaxedState(state);
+            if (waxedState.isPresent()) {
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    Criteria.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
+                }
+
+                if (!player.isCreative()) {
+                    stack.decrement(1);
+                }
+
+                world.setBlockState(pos, waxedState.get(), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
+                world.playSound(player, pos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                return ActionResult.SUCCESS;
+            }
+        }
+
+        // Handle unwaxing with axe
+        if (item instanceof AxeItem) {
+            Optional<BlockState> unwaxedState = this.getUnwaxedState(state);
+            if (unwaxedState.isPresent()) {
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    Criteria.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
+                }
+
+                world.setBlockState(pos, unwaxedState.get(), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
+                world.playSound(player, pos, SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                return ActionResult.SUCCESS;
+            }
+        }
+
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 }
